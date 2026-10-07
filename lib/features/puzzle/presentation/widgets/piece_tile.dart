@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import '../../domain/puzzle_layout.dart';
-
+import 'piece_tile_surface.dart';
 import 'puzzle_piece.dart';
 
 class PieceTile extends StatelessWidget {
@@ -17,6 +17,9 @@ class PieceTile extends StatelessWidget {
     required this.onTap,
     required this.cell,
     this.feedbackCell,
+    this.used = false,
+    this.longPressToDrag = false,
+    this.onDragStarted,
   });
 
   final ui.Image image;
@@ -27,6 +30,9 @@ class PieceTile extends StatelessWidget {
   final VoidCallback onTap;
   final double cell;
   final double? feedbackCell;
+  final bool used;
+  final bool longPressToDrag;
+  final VoidCallback? onDragStarted;
 
   @override
   Widget build(BuildContext context) {
@@ -37,48 +43,54 @@ class PieceTile extends StatelessWidget {
       layout: layout,
       cell: cell,
     );
-    return Semantics(
-      button: true,
+    final surface = PieceTileSurface(
       selected: selected,
-      label: 'Puzzle piece ${id + 1}. Select, then tap a board slot.',
-      child: Draggable<int>(
-        data: id,
-        affinity: Axis.vertical,
-        dragAnchorStrategy: (draggable, context, position) =>
-            Offset((feedbackCell ?? cell) * .72, (feedbackCell ?? cell) * .72),
-        maxSimultaneousDrags: 1,
-        feedback: Material(
-          color: Colors.transparent,
-          child: PuzzlePiece(
-            image: image,
-            id: id,
-            dimension: dimension,
-            layout: layout,
-            cell: feedbackCell ?? cell,
-          ),
-        ),
-        childWhenDragging: Opacity(opacity: .2, child: piece),
-        child: GestureDetector(
-          onTap: onTap,
-          child: AnimatedContainer(
-            duration: Duration(
-              milliseconds: MediaQuery.disableAnimationsOf(context) ? 0 : 180,
-            ),
-            decoration: BoxDecoration(
-              color: selected
-                  ? const Color(0xFFD7E9DF)
-                  : const Color(0xFFF3F2ED),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: selected ? const Color(0xFF24786C) : Colors.transparent,
-                width: 2,
-              ),
-            ),
-            padding: const EdgeInsets.all(4),
-            child: piece,
-          ),
-        ),
+      used: used,
+      child: piece,
+    );
+    final child = GestureDetector(onTap: used ? null : onTap, child: surface);
+    final feedback = Material(
+      color: Colors.transparent,
+      child: PuzzlePiece(
+        image: image,
+        id: id,
+        dimension: dimension,
+        layout: layout,
+        cell: feedbackCell ?? cell,
       ),
+    );
+    final anchor = (feedbackCell ?? cell) * .72;
+    final draggable = longPressToDrag
+        ? LongPressDraggable<int>(
+            data: id,
+            delay: const Duration(milliseconds: 220),
+            maxSimultaneousDrags: 1,
+            onDragStarted: onDragStarted,
+            dragAnchorStrategy: (draggable, context, position) =>
+                Offset(anchor, anchor),
+            feedback: feedback,
+            childWhenDragging: Opacity(opacity: .2, child: surface),
+            child: child,
+          )
+        : Draggable<int>(
+            data: id,
+            affinity: Axis.vertical,
+            maxSimultaneousDrags: 1,
+            onDragStarted: onDragStarted,
+            dragAnchorStrategy: (draggable, context, position) =>
+                Offset(anchor, anchor),
+            feedback: feedback,
+            childWhenDragging: Opacity(opacity: .2, child: surface),
+            child: child,
+          );
+    return Semantics(
+      button: !used,
+      enabled: !used,
+      selected: selected && !used,
+      label: used
+          ? 'Puzzle piece ${id + 1}, placed'
+          : 'Puzzle piece ${id + 1}. Select, then tap a board slot.',
+      child: used ? surface : draggable,
     );
   }
 }

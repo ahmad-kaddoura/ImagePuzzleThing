@@ -11,9 +11,15 @@ flutter pub get
 flutter run
 ```
 
+## Piece sheet
+
+The app starts with the reference-inspired lakeside screen and a 5×5 jigsaw. Drag the piece-sheet header upward or tap its handle to expand the grid. The grid retains every piece; placed pieces are grayscale and cannot be selected or dragged. Selecting an available piece collapses the sheet and brings that piece to the front of the strip.
+
+Open the settings gear for layouts, difficulty, preview, sound, haptics, restart, and image selection.
+
 ## Use your own image
 
-The image button accepts a direct HTTPS image URL or a bundled asset path. The included lakeside artwork works offline. Asset paths must be registered in `pubspec.yaml`.
+The settings panel’s image button accepts a direct HTTPS image URL or a bundled asset path. The included reference-inspired lakeside artwork works offline. Asset paths must be registered in `pubspec.yaml`.
 
 The reusable widget accepts any Flutter `ImageProvider`:
 
@@ -55,4 +61,4 @@ flutter build ios --simulator --debug
 flutter build apk --debug
 ```
 
-Tests cover placement, invalid and duplicate attempts, completion, shape coverage, drag and tap interaction, preview protection, and phone layout bounds. Physical haptic feel requires a supported device; simulators cannot reproduce it.
+Tests cover placement, invalid and duplicate attempts, completion, shape coverage, drag and tap interaction, preview protection, and phone and landscape layout bounds, sheet expansion by swiping, grid selection, and disabled placed pieces. Physical haptic feel requires a supported device; simulators cannot reproduce it.

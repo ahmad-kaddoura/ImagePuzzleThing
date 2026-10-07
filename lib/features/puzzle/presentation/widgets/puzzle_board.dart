@@ -26,7 +26,7 @@ class PuzzleBoard extends StatelessWidget {
         final cell = constraints.maxWidth / game.dimension;
         return DecoratedBox(
           decoration: BoxDecoration(
-            color: const Color(0xFFE6E9E1),
+            color: const Color(0xFFE7E8E2),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Stack(

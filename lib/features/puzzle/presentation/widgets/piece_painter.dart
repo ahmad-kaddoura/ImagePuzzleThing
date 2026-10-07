@@ -26,7 +26,7 @@ class PiecePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final path = PiecePath.create(id, dimension, cell, layout);
     if (ghost) {
-      canvas.drawPath(path, Paint()..color = const Color(0xFFE6E9E1));
+      canvas.drawPath(path, Paint()..color = const Color(0xFFE7E8E2));
     } else {
       canvas.drawShadow(path, const Color(0x5534493D), 3, false);
       canvas.save();
@@ -57,7 +57,7 @@ class PiecePainter extends CustomPainter {
     canvas.drawPath(
       path,
       Paint()
-        ..color = ghost ? const Color(0xFFCBD5CA) : const Color(0xAAFFFFFF)
+        ..color = ghost ? const Color(0xFFC4CCC3) : const Color(0xAAFFFFFF)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1,
     );

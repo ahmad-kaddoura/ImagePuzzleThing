@@ -10,12 +10,14 @@ class ImagePuzzle extends StatefulWidget {
     this.title = 'Your little escape',
     this.initialLayout = PuzzleLayout.jigsaw,
     this.initialDimension = 3,
+    this.onChangeImage,
   });
 
   final ImageProvider image;
   final String title;
   final PuzzleLayout initialLayout;
   final int initialDimension;
+  final VoidCallback? onChangeImage;
 
   @override
   State<ImagePuzzle> createState() => _ImagePuzzleState();
@@ -111,6 +113,7 @@ class _ImagePuzzleState extends State<ImagePuzzle> {
       title: widget.title,
       initialLayout: widget.initialLayout,
       initialDimension: widget.initialDimension,
+      onChangeImage: widget.onChangeImage,
     );
   }
 }

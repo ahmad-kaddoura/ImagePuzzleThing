@@ -67,7 +67,9 @@ class _ImageSourceDialogState extends State<ImageSourceDialog> {
             keyboardType: _network ? TextInputType.url : TextInputType.text,
             onSubmitted: (_) => _submit(),
             decoration: InputDecoration(
-              labelText: _network ? 'https://…' : 'assets/images/lakeside.png',
+              labelText: _network
+                  ? 'https://…'
+                  : 'assets/images/lakeside_reference.png',
               errorText: _error,
               border: const OutlineInputBorder(),
             ),
@@ -86,7 +88,7 @@ class _ImageSourceDialogState extends State<ImageSourceDialog> {
       TextButton(
         onPressed: () =>
             Navigator.of(context)
-                .pop(const AssetImage('assets/images/lakeside.png')),
+                .pop(const AssetImage('assets/images/lakeside_reference.png')),
         child: const Text('Use lakeside'),
       ),
       TextButton(
