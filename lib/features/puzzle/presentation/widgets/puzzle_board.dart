@@ -11,11 +11,13 @@ class PuzzleBoard extends StatelessWidget {
     required this.image,
     required this.controller,
     required this.onPlace,
+    this.onDrop,
   });
 
   final ui.Image image;
   final PuzzleController controller;
   final void Function(int, int) onPlace;
+  final void Function(int, int)? onDrop;
 
   @override
   Widget build(BuildContext context) => AspectRatio(
@@ -44,6 +46,7 @@ class PuzzleBoard extends StatelessWidget {
                     cell: cell,
                     controller: controller,
                     onPlace: onPlace,
+                    onDrop: onDrop ?? onPlace,
                   ),
                 ),
               if (controller.preview)

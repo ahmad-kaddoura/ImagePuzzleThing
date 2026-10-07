@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_puzzle/features/puzzle/domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
 import 'package:image_puzzle/features/puzzle/presentation/controllers/puzzle_controller.dart';
 
 void main() {
@@ -35,6 +35,18 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
     expect(controller.seconds, 3);
     expect(controller.game.isComplete, isTrue);
+    controller.dispose();
+  });
+  testWidgets('opening settings pauses an active puzzle timer', (tester) async {
+    final controller = PuzzleController();
+    controller.place(0, 0);
+    await tester.pump(const Duration(seconds: 2));
+    controller.setPaused(true);
+    await tester.pump(const Duration(seconds: 4));
+    expect(controller.seconds, 2);
+    controller.setPaused(false);
+    await tester.pump(const Duration(seconds: 1));
+    expect(controller.seconds, 3);
     controller.dispose();
   });
 }

@@ -11,11 +11,13 @@ class PuzzleBoardFrame extends StatelessWidget {
     required this.image,
     required this.controller,
     required this.onPlace,
+    required this.onDrop,
   });
 
   final ui.Image image;
   final PuzzleController controller;
   final void Function(int, int) onPlace;
+  final void Function(int, int) onDrop;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -42,6 +44,7 @@ class PuzzleBoardFrame extends StatelessWidget {
           image: image,
           controller: controller,
           onPlace: onPlace,
+          onDrop: onDrop,
         ),
       ),
     ),

@@ -2,7 +2,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-import '../../domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
+
 import 'piece_tile_surface.dart';
 import 'puzzle_piece.dart';
 

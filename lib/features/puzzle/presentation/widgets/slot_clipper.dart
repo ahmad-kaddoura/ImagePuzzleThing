@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
+
 import 'piece_path.dart';
 
 class SlotClipper extends CustomClipper<Path> {

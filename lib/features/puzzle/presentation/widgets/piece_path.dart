@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
 
 abstract final class PiecePath {
   static const padding = .22;

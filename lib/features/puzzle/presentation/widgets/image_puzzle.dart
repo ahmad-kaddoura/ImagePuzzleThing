@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
+
 import 'puzzle_workspace.dart';
+import 'puzzle_image_failure.dart';
 
 class ImagePuzzle extends StatefulWidget {
   const ImagePuzzle({
@@ -10,14 +12,24 @@ class ImagePuzzle extends StatefulWidget {
     this.title = 'Your little escape',
     this.initialLayout = PuzzleLayout.jigsaw,
     this.initialDimension = 3,
-    this.onChangeImage,
+    this.onSettings,
+    this.snapToPosition = true,
+    this.showPiecePreview = true,
+    this.highlightMatchingAreas = true,
+    this.soundEnabled = true,
+    this.hapticsEnabled = true,
   });
 
   final ImageProvider image;
   final String title;
   final PuzzleLayout initialLayout;
   final int initialDimension;
-  final VoidCallback? onChangeImage;
+  final Future<void> Function()? onSettings;
+  final bool snapToPosition;
+  final bool showPiecePreview;
+  final bool highlightMatchingAreas;
+  final bool soundEnabled;
+  final bool hapticsEnabled;
 
   @override
   State<ImagePuzzle> createState() => _ImagePuzzleState();
@@ -84,28 +96,14 @@ class _ImagePuzzleState extends State<ImagePuzzle> {
   @override
   Widget build(BuildContext context) {
     if (_failed) {
-      return Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          children: [
-            const Icon(Icons.broken_image_outlined, size: 40),
-            const SizedBox(height: 16),
-            const Text('This image couldn’t be loaded. Check its path or URL.'),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () => setState(_resolve),
-              child: const Text('Try again'),
-            ),
-          ],
-        ),
+      return PuzzleImageFailure(
+        onRetry: () => setState(_resolve),
+        onSettings: widget.onSettings,
       );
     }
     final info = _info;
     if (info == null) {
-      return const SizedBox(
-        height: 320,
-        child: Center(child: CircularProgressIndicator()),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
     return PuzzleWorkspace(
       key: ObjectKey(widget.image),
@@ -113,7 +111,12 @@ class _ImagePuzzleState extends State<ImagePuzzle> {
       title: widget.title,
       initialLayout: widget.initialLayout,
       initialDimension: widget.initialDimension,
-      onChangeImage: widget.onChangeImage,
+      onSettings: widget.onSettings,
+      snapToPosition: widget.snapToPosition,
+      showPiecePreview: widget.showPiecePreview,
+      highlightMatchingAreas: widget.highlightMatchingAreas,
+      soundEnabled: widget.soundEnabled,
+      hapticsEnabled: widget.hapticsEnabled,
     );
   }
 }

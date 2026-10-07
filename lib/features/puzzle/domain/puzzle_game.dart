@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
 
 class PuzzleGame {
   PuzzleGame({
@@ -8,15 +8,16 @@ class PuzzleGame {
     this.layout = PuzzleLayout.jigsaw,
     Random? random,
   }) {
-    if (dimension < 2 || dimension > 6) {
+    if (dimension < 2 || dimension > 10) {
       throw ArgumentError.value(
         dimension,
         'dimension',
-        'Must be between 2 and 6',
+        'Must be between 2 and 10',
       );
     }
+    final source = random ?? Random();
     order = List.unmodifiable(
-      List.generate(total, (index) => index)..shuffle(random ?? Random()),
+      List.generate(total, (index) => index)..shuffle(source),
     );
   }
 
@@ -33,7 +34,6 @@ class PuzzleGame {
   List<int> get remaining =>
       order.where((id) => !_placed.contains(id)).toList(growable: false);
   bool isPlaced(int id) => _placed.contains(id);
-
   bool place(int piece, int slot) {
     if (piece < 0 ||
         piece >= total ||

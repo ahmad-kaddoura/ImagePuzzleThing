@@ -53,12 +53,16 @@ class PieceSheetHeader extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
           child: Row(
             children: [
-              const Text(
-                'Your pieces',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF142E33),
+              const Flexible(
+                child: Text(
+                  'Your pieces',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF142E33),
+                  ),
                 ),
               ),
               const Spacer(),

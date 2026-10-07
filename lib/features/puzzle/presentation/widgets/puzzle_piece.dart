@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-import '../../domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
 
 import 'piece_path.dart';
 import 'piece_painter.dart';
@@ -16,6 +16,7 @@ class PuzzlePiece extends StatelessWidget {
     required this.layout,
     required this.cell,
     this.ghost = false,
+    this.revealGhost = false,
   });
 
   final ui.Image image;
@@ -24,17 +25,21 @@ class PuzzlePiece extends StatelessWidget {
   final PuzzleLayout layout;
   final double cell;
   final bool ghost;
+  final bool revealGhost;
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-    size: Size.square(cell * (1 + PiecePath.padding * 2)),
-    painter: PiecePainter(
-      image: image,
-      id: id,
-      dimension: dimension,
-      layout: layout,
-      cell: cell,
-      ghost: ghost,
-    ),
-  );
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: Size.square(cell * (1 + PiecePath.padding * 2)),
+      painter: PiecePainter(
+        image: image,
+        id: id,
+        dimension: dimension,
+        layout: layout,
+        cell: cell,
+        ghost: ghost,
+        revealGhost: revealGhost,
+      ),
+    );
+  }
 }

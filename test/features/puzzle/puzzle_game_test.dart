@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_puzzle/features/puzzle/domain/puzzle_game.dart';
-import 'package:image_puzzle/features/puzzle/domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
 
 void main() {
   for (final layout in PuzzleLayout.values) {
-    for (final size in [3, 4, 5]) {
+    for (final size in [3, 5, 7, 10]) {
       test('${layout.label} $size can be completed exactly once', () {
         final game = PuzzleGame(
           dimension: size,
@@ -43,6 +43,6 @@ void main() {
   }
   test('invalid dimensions are rejected', () {
     expect(() => PuzzleGame(dimension: 1), throwsArgumentError);
-    expect(() => PuzzleGame(dimension: 7), throwsArgumentError);
+    expect(() => PuzzleGame(dimension: 11), throwsArgumentError);
   });
 }

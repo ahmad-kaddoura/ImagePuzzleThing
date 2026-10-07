@@ -18,6 +18,7 @@ class ScenicPuzzleScene extends StatelessWidget {
     required this.controller,
     required this.onSettings,
     required this.onPlace,
+    this.onDrop,
   });
 
   final ui.Image image;
@@ -25,6 +26,7 @@ class ScenicPuzzleScene extends StatelessWidget {
   final PuzzleController controller;
   final VoidCallback onSettings;
   final void Function(int, int) onPlace;
+  final void Function(int, int)? onDrop;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -36,7 +38,12 @@ class ScenicPuzzleScene extends StatelessWidget {
       final contentWidth = min(width, 520.0);
       final inset = max(12.0, safe.bottom * .45);
       final headerTop = max(safe.top + 8, height * .078);
-      final collapsedHeight = max(180.0, min(190.0, contentWidth * .44));
+      final textExtra = max(
+        0.0,
+        MediaQuery.textScalerOf(context).scale(15) - 15,
+      );
+      final collapsedHeight =
+          max(180.0, min(190.0, contentWidth * .44)) + textExtra * 2;
       final boardTop = landscape
           ? headerTop + 122
           : max(headerTop + 116, height * .335);
@@ -73,6 +80,7 @@ class ScenicPuzzleScene extends StatelessWidget {
               image: image,
               controller: controller,
               onPlace: onPlace,
+              onDrop: onDrop ?? onPlace,
             ),
           ),
           Positioned(

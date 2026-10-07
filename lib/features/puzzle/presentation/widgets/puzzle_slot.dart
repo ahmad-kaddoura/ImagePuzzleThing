@@ -3,7 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../../domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
+
 import '../controllers/puzzle_controller.dart';
 import 'piece_path.dart';
 import 'puzzle_piece.dart';
@@ -17,6 +18,7 @@ class PuzzleSlot extends StatelessWidget {
     required this.cell,
     required this.controller,
     required this.onPlace,
+    required this.onDrop,
   });
 
   final ui.Image image;
@@ -24,6 +26,7 @@ class PuzzleSlot extends StatelessWidget {
   final double cell;
   final PuzzleController controller;
   final void Function(int, int) onPlace;
+  final void Function(int, int) onDrop;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class PuzzleSlot extends StatelessWidget {
     final rejected = controller.rejectedSlot == id;
     final target = DragTarget<int>(
       onWillAcceptWithDetails: (details) => !placed && !controller.preview,
-      onAcceptWithDetails: (details) => onPlace(details.data, id),
+      onAcceptWithDetails: (details) => onDrop(details.data, id),
       builder: (context, candidates, rejectedData) => Semantics(
         button: !placed,
         label: 'Slot ${id + 1}${placed ? ', filled' : ''}',
@@ -84,9 +87,31 @@ class PuzzleSlot extends StatelessWidget {
                     layout: game.layout,
                     cell: cell,
                     ghost: !placed,
+                    revealGhost:
+                        !placed &&
+                        controller.showPiecePreview &&
+                        controller.selected == id,
                   ),
                 ),
               ),
+              if (!placed &&
+                  controller.highlightMatchingAreas &&
+                  controller.selected == id)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: ClipPath(
+                      clipper: SlotClipper(
+                        id: id,
+                        dimension: game.dimension,
+                        layout: game.layout,
+                      ),
+                      child: ColoredBox(
+                        color: const Color(0x30169A87),
+                        child: SizedBox.square(dimension: cell),
+                      ),
+                    ),
+                  ),
+                ),
               if (candidates.isNotEmpty)
                 ClipPath(
                   clipper: SlotClipper(

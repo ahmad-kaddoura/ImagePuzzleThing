@@ -44,6 +44,8 @@ class PieceSheetHint extends StatelessWidget {
                         ? 'Try another space'
                         : controller.preview
                         ? 'Hide the preview to keep playing'
+                        : !controller.snapToPosition
+                        ? 'Select a piece, then tap its slot'
                         : 'Drag a piece to the board',
                     style: const TextStyle(
                       fontSize: 11,

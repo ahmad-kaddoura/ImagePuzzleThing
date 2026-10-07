@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_puzzle/features/puzzle/domain/puzzle_layout.dart';
+import 'package:image_puzzle/core/domain/puzzle_layout.dart';
 import 'package:image_puzzle/features/puzzle/presentation/controllers/puzzle_controller.dart';
 import 'package:image_puzzle/features/puzzle/presentation/widgets/piece_tile.dart';
 import 'package:image_puzzle/features/puzzle/presentation/widgets/puzzle_board.dart';
