@@ -1,6 +1,8 @@
 # Image Puzzle
 
-A minimal Flutter application with a blank starting page.
+A Flutter image puzzle with three interchangeable layouts: interlocking jigsaw, square mosaic, and triangular prism. Choose a layout or use the random-layout button. Easy, medium, and hard use 3×3, 4×4, and 5×5 cells; prism has two pieces per cell.
+
+Drag a piece into its matching slot, or select a piece and tap a slot. Correct placements animate into place with a bundled snap sound and light haptic feedback. Completion plays a short chime and a stronger haptic. Sound and haptics can be disabled independently.
 
 ## Run
 
@@ -9,25 +11,48 @@ flutter pub get
 flutter run
 ```
 
-## Structure
+## Use your own image
 
-```text
-lib/
-  main.dart
-  app/
-    app.dart
-  features/
-    puzzle/
-      presentation/
-        pages/
-          puzzle_page.dart
+The image button accepts a direct HTTPS image URL or a bundled asset path. The included lakeside artwork works offline. Asset paths must be registered in `pubspec.yaml`.
+
+The reusable widget accepts any Flutter `ImageProvider`:
+
+```dart
+ImagePuzzle(
+  image: const AssetImage('assets/images/lakeside.png'),
+  initialLayout: PuzzleLayout.jigsaw,
+  initialDimension: 3,
+)
 ```
 
-Add feature widgets under `presentation/widgets/` and introduce domain and data layers as needed. Follow the project rules in [AGENTS.md](AGENTS.md).
+```dart
+ImagePuzzle(
+  image: NetworkImage(imageUrl),
+  initialLayout: PuzzleLayout.triangles,
+  title: 'Your little escape',
+)
+```
+
+Import `ImagePuzzle` from `lib/features/puzzle/presentation/widgets/image_puzzle.dart` and `PuzzleLayout` from `lib/features/puzzle/domain/puzzle_layout.dart`. Supported starting difficulties are 3, 4, and 5. All layouts use the same centered square crop. Images are decoded at a bounded resolution, with loading, failure, and retry states.
+
+## Structure
+
+- `lib/app/`: app composition and theme.
+- `lib/features/puzzle/domain/`: layout definitions and placement rules, independent of Flutter.
+- `lib/features/puzzle/presentation/controllers/`: session state and feedback lifecycle.
+- `lib/features/puzzle/presentation/widgets/`: image loading, geometry, painting, board, tray, and responsive controls.
+- `lib/features/puzzle/presentation/pages/`: screen composition.
+
+Follow [AGENTS.md](AGENTS.md) for project rules. Generated native files may regain comments during Flutter or CocoaPods builds.
 
 ## Validate
 
 ```sh
-dart format lib
+dart format lib test
 flutter analyze
+flutter test
+flutter build ios --simulator --debug
+flutter build apk --debug
 ```
+
+Tests cover placement, invalid and duplicate attempts, completion, shape coverage, drag and tap interaction, preview protection, and phone layout bounds. Physical haptic feel requires a supported device; simulators cannot reproduce it.
